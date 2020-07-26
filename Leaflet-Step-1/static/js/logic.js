@@ -3,7 +3,7 @@ let mymap = L.map("mapid", {
     zoom: 4
 });
 
-
+// Create the tile layer
 let lightmap = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
     maxZoom: 18,
@@ -36,6 +36,7 @@ function chooseColor(magnitude) {
     }
 }
 
+//Function to display marker accordign to magnitude
 function markerSize(magnitude){
     return magnitude * 4
 }
@@ -54,9 +55,9 @@ d3.json(link).then(function (data) {
     console.log(data)
     // Creating a geoJSON layer with the retrieved data
     L.geoJson(data, {
-        // Passing in our style object
-        //style: mapStyle,
+
         pointToLayer: function (feature, latlng) {
+            // Display cirlce markers using functions for size and color depending on magnitude
             return L.circleMarker(latlng, {
                 radius: markerSize(feature.properties.mag),
                 fillColor: chooseColor(feature.properties.mag),
@@ -68,12 +69,14 @@ d3.json(link).then(function (data) {
         },
         onEachFeature: function (feature, layer) {
             //console.log(d3.max(feature.properties.mag))
+            //For each earthquake append popup with useful information
             layer.bindPopup(`Magnitude: ${feature.properties.mag}<br>Location: ${feature.properties.place}`)
         }
         
     }).addTo(mymap);
 });
 
+//Cretate legeng specifying grades and color with the function previously defined
 let legend = L.control({position: 'bottomright'});
 
 legend.onAdd = function (map) {
