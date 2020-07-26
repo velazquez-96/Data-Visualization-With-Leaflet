@@ -78,8 +78,6 @@ d3.json(link).then(function (data) {
     console.log(data)
     // Creating a geoJSON layer with the retrieved data
     L.geoJson(data, {
-        // Passing in our style object
-        //style: mapStyle,
         pointToLayer: function (feature, latlng) {
             return L.circleMarker(latlng, {
                 radius: markerSize(feature.properties.mag),
